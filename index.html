@@ -47,20 +47,22 @@ canvas{box-shadow:0 0 24px #00f0ff22}#hc{box-shadow:none}
 input{background:var(--pn);color:var(--tx);border:1px solid #2b3a5c;border-radius:10px;padding:10px;font:inherit}
 #kh{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));left:8px;z-index:20;background:rgba(14,20,36,.92);border:1px solid #FFB800;color:#FFB800;border-radius:20px;padding:5px 12px;font-weight:700;font-size:14px;box-shadow:0 0 12px #ffb80055}
 .s{padding-top:56px}
+#net{display:none;position:fixed;inset:auto 0 0 0;max-width:640px;margin:auto;background:#0e1424;border:2px solid var(--ok);border-radius:16px 16px 0 0;padding:16px;z-index:30;max-height:85vh;overflow:auto}#net.on{display:block}
+textarea{width:100%;height:90px;background:#05070d;color:var(--tx);border:1px solid #2b3a5c;border-radius:8px;font:11px monospace;margin:6px 0}
 #mm{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));right:58px;z-index:20;padding:6px 10px}
 #cit{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}#cit .ch{min-height:76px}
 #shl{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin-top:12px}</style></head><body>
 <div id="menu" class="s on"><canvas id="hc" width="1521" height="925"></canvas><div class="hero"><span class="badge">🛰 MISSION DESIGN LAB · ЦЕНТР УПРАВЛІННЯ ПОЛЬОТАМИ</span>
 <div class="logo">КРОК У КОСМОС</div><div class="sub">АРХІТЕКТОР МІСІЙ</div>
 <p class="tagl">Спроєктуй власний супутник, запусти його й дізнайся, як працює космос — без жодних попередніх знань.</p>
-<p id="fnd" class="fb">💰 Фонди: <b>$0.0M</b></p><button class="big cta" id="play">▶ ПОЧАТИ ГРУ</button><div class="mrow"><button onclick="shop()">🛒 Лабораторія покращень</button><button onclick="rst()">↺ Почати спочатку</button><button onclick="tg()">🔊 Звук увімк./вимк.</button><button id="tnb" onclick="ctn()"></button><button id="dfb" onclick="cdf()"></button></div>
+<p id="fnd" class="fb">💰 Фонди: <b>$0.0M</b></p><button class="big cta" id="play">▶ ПОЧАТИ ГРУ</button><div class="mrow"><button onclick="shop()">🛒 Лабораторія покращень</button><button onclick="rst()">↺ Почати спочатку</button><button onclick="tg()">🔊 Звук увімк./вимк.</button><button id="tnb" onclick="ctn()"></button><button onclick="nopen()">🌐 Мультиплеєр</button><button id="dfb" onclick="cdf()"></button></div>
 <div id="cl"><button class="ch c" onclick="story(0)"><span class="n">01</span><span class="ic">🛰</span><b>Перший погляд на Землю</b><small>▶ Доступно</small></button><button class="ch " disabled="" onclick="story(1)"><span class="n">02</span><span class="ic">🔋</span><b>Енергія та Тінь Землі</b><small>🔒 Закрито</small></button><button class="ch " disabled="" onclick="story(2)"><span class="n">03</span><span class="ic">📡</span><b>Почути шепіт із космосу</b><small>🔒 Закрито</small></button><button class="ch " disabled="" onclick="story(3)"><span class="n">04</span><span class="ic">🌕</span><b>Великий виклик: Місячний розвідник</b><small>🔒 Закрито</small></button><button class="ch " disabled="" onclick="story(4)"><span class="n">05</span><span class="ic">🔭</span><b>Наука — це гроші</b><small>🔒 Закрито</small></button><button class="ch " disabled="" onclick="story(5)"><span class="n">06</span><span class="ic">🔴</span><b>Червона планета</b><small>🔒 Закрито</small></button><button class="ch " disabled="" onclick="story(6)"><span class="n">07</span><span class="ic">🪐</span><b>Гігант Юпітер</b><small>🔒 Закрито</small></button><button class="ch " disabled="" onclick="story(7)"><span class="n">08</span><span class="ic">❄️</span><b>Край Сонячної системи</b><small>🔒 Закрито</small></button></div>
 <div class="row greet"><div class="av"></div><div class="bubble">Привіт! Я доктор Олена Коваль, головний системний інженер. Разом ми пройдемо 4 місії — від першого кубсата до польоту на Місяць. Готовий, стажере?</div></div><div class="row greet"><div class="pav"></div><div class="bubble"><b id="pn"></b><br>Це твій персонаж. За кожну пройдену місію отримуєш 🪙 касткоїни й можеш змінювати його вигляд.<br><button onclick="cus()">👨‍🚀 Кастомізація</button> <span class="fb" id="kc"></span></div></div></div></div>
 <div id="shop" class="s"><div class="top"><button onclick="menu()">☰ Меню</button><b id="fd"></b></div><h2>🛒 Лабораторія покращень</h2><p>Гроші, зароблені на науці, вкладай у технології — вони діють у всіх наступних місіях.</p><div id="shl"></div></div><div id="story" class="s"><div class="top"><button onclick="menu()">☰ Вибір глави</button><b id="ct"></b><span class="pav s"></span></div>
 <canvas id="ic" width="640" height="300"></canvas><div class="row"><div class="av"><small>Д-р Олена Коваль</small></div><div class="bubble"><div id="tx"></div><div id="qs"></div></div></div><button id="nx" class="big"></button></div>
 <div id="mis" class="s"><div class="top"><button onclick="menu()">☰ Меню</button><b id="fm"></b><span class="pav s"></span><button onclick="jr()">📖 Бортовий журнал</button></div><div class="goal" id="goal"></div><div id="mt"></div><canvas id="mc" width="640" height="360"></canvas><div class="tabs" id="pl"></div><div class="tabs" id="yr"></div><div class="tabs" id="tbs"></div><div id="cds"></div><p class="fb" id="hint"></p><button id="lb" class="big" onclick="go()">🚀 ЗАПУСК</button></div>
 <div id="cus" class="s"><div class="top"><button onclick="menu()">☰ Меню</button><b id="cc"></b></div><h2>👨‍🚀 Кастомізація персонажа</h2><div class="row" style="align-items:center"><div class="pav l"></div><div><input id="nm" maxlength="14" placeholder="Твій позивний" oninput="P.nm=this.value;save()"><p class="fb">Обери категорію й купуй речі за касткоїни. Аксесуари можна одягати одразу кілька.</p></div></div><div class="tabs" id="ctb"></div><div id="cit"></div></div>
-<div id="kh">🪙 0 касткоїнів</div><button id="mu" onclick="tg()">🔊</button><button id="mm" onclick="tmu()">🎵</button><div id="res"></div><div id="lg"></div>
+<div id="kh">🪙 0 касткоїнів</div><button id="mu" onclick="tg()">🔊</button><button id="mm" onclick="tmu()">🎵</button><div id="net"></div><div id="res"></div><div id="lg"></div>
 <script>
 const $=s=>document.querySelector(s),ix=$('#ic').getContext('2d'),cx=$('#mc').getContext('2d');
 let P={u:0};try{P=JSON.parse(localStorage.getItem('ks')||'{"u":0}')||{u:0}}catch(e){}
@@ -156,7 +158,7 @@ flarebad:'Під час сонячного спалаху ця дія не до�
 let cur=0,si=0,ans=0,tm,sel={},tab,run=null;
 function show(id){setTimeout(paintPav,0);document.querySelectorAll('.s').forEach(e=>e.classList.toggle('on',e.id==id));$('#res').classList.remove('on');$('#lg').classList.remove('on')}
 function rst(){if(confirm('Стерти прогрес і почати спочатку?')){P={u:0,k:P.k,own:P.own,eq:P.eq,eg:P.eg,nm:P.nm,cl:P.cl,mo:P.mo};save();menu()}}
-function menu(){show('menu');$('#tnb').textContent='👥 Гравців: '+tn();$('#dfb').textContent='🎚 Складність: '+DFN[df()];$('#pn').textContent='👨‍🚀 '+(P.nm||'Стажер');$('#kc').textContent='🪙 '+(P.k||0);$('#fnd').innerHTML='💰 Фонди: <b>$'+(P.$||0).toFixed(1)+'M</b>';const IC4=['🛰','🔋','📡','🌕','🔭','☀️','🔴','🪐','❄️'];
+function menu(){show('menu');nlab();$('#dfb').textContent='🎚 Складність: '+DFN[df()];$('#pn').textContent='👨‍🚀 '+(P.nm||'Стажер');$('#kc').textContent='🪙 '+(P.k||0);$('#fnd').innerHTML='💰 Фонди: <b>$'+(P.$||0).toFixed(1)+'M</b>';const IC4=['🛰','🔋','📡','🌕','🔭','☀️','🔴','🪐','❄️'];
 $('#play').textContent=P.d?'🏆 Усі місії виконано! Пройти знову':P.u>0?'▶ ПРОДОВЖИТИ — Глава '+(P.u+1):'▶ ПОЧАТИ ГРУ';$('#play').onclick=()=>story(P.d?0:P.u);
 $('#cl').innerHTML=C.map((c,i)=>{const d=i<P.u||(i==C.length-1&&P.d),cu=i==P.u&&!P.d;return `<button class="ch ${d?'d':cu?'c':''}" ${i>P.u?'disabled':''} onclick="story(${i})"><span class="n">0${i+1}</span><span class="ic">${IC4[i]}</span><b>${c.t}</b><small>${d?'✅ Пройдено '+bs(i):i>P.u?'🔒 Закрито':'▶ Доступно'}</small></button>`}).join('')}
 const SS=[];
@@ -252,7 +254,7 @@ if(c.cov&&x.orb.v<c.cov)return{k:'cov',p:.95,h};
 if(x.cam.q<2)return{k:'q',p:.95,h};
 if(c.dt&&x.d>x.link)return{k:'dat',p:.95,h};
 if(c.sg&&x.sc*4<c.sg)return{k:'sci',p:.95,h};return{k:'ok',p:1,h,fl:c.fl}}
-function mission(){sel={};run=null;tab=C[cur].sl[0];$('#goal').innerHTML='<b>Глава '+(cur+1)+': '+C[cur].t+'</b><br>'+C[cur].goal+'<br>💰 Камера й наукові сканери збирають науку під час польоту — за неї отримаєш гроші на покращення.'+(tn()>1?'<br>👥 Командний режим: кожен керує лише своїми вкладками, запуск — коли всі натиснуть «Готовий».':'')+'<br>⏳ Довша місія дає більше науки, але панелі й батареї старіють, а експлуатація коштує дорожче.';act=0;ready=[];att=0;yrs=1;show('mis');ui()}
+function mission(){sel={};run=null;tab=C[cur].sl[0];$('#goal').innerHTML='<b>Глава '+(cur+1)+': '+C[cur].t+'</b><br>'+C[cur].goal+'<br>💰 Камера й наукові сканери збирають науку під час польоту — за неї отримаєш гроші на покращення.'+(tn()>1?'<br>👥 Командний режим: кожен керує лише своїми вкладками, запуск — коли всі натиснуть «Готовий».':'')+'<br>⏳ Довша місія дає більше науки, але панелі й батареї старіють, а експлуатація коштує дорожче.';act=NET.on?NET.id:0;ready=[];att=0;yrs=1;if(NET.on&&NET.host)tx({t:'mis',c:cur,n:NET.n});show('mis');ui();bc()}
 const mt=(l,v,r)=>`<div class="m"><i style="width:${Math.min(100,r*100)}%;background:${r>1?'var(--bd)':r>.85?'var(--wr)':'var(--ok)'}"></i><span>${l}</span><b>${v}</b></div>`;
 const info=o=>'$'+o.c+'M'+U.filter(u=>o[u[0]]!=null).map(u=>' · '+o[u[0]]+u[1]).join('');
 function ui(){$('#fm').textContent='💰 $'+(P.$||0).toFixed(1)+'M';const c=C[cur],x=ev(),cap=x.rk?x.rk.cap:0;let h=mt('Маса',`${x.m} / ${cap||'—'} кг`,cap?x.m/cap:0)+mt('Бюджет',`$${x.cost.toFixed(1)}M / $${bud().toFixed(0)}M`,x.cost/bud());
@@ -261,15 +263,16 @@ if(c.th)h+=mt('Тепловий щит (треба ≥ '+x.orb.shn+')',x.sh+' / 
 if(c.dt)h+=mt('Дані за виток',`${x.d} / ${Math.round(x.link)} МБ`,x.link?x.d/x.link:(x.d?2:0));if(c.sg){const sc=Math.round(x.sc*4);h+=mt('Наука за місію',sc+' / '+c.sg,sc?c.sg/sc:1.5)}
 $('#mt').innerHTML=h;rp();$('#tbs').innerHTML=c.sl.map(k=>`<button class="tb ${k==tab?'a':''}" ${own(k)?'':'disabled'} onclick="tab='${k}';ui()">${IC[k]} ${SL[k][0]}${sel[k]?' ✓':''}</button>`).join('');
 $('#cds').innerHTML=opts(tab).map((o,i)=>`<button class="cd ${sel[tab]===o?'a':''}" onclick="pk('${tab}',${i})"><b>${o.n}</b><small>${info(o)}</small></button>`).join('');
-const over=x.cost>bud();$('#hint').textContent=x.miss.length?'Обери: '+x.miss.map(k=>SL[k][0]).join(', '):over?'Перевищено бюджет!':'';$('#lb').disabled=!!x.miss.length||over||!!run||(tn()>1&&ready.filter(Boolean).length<tn())}
-function pk(k,i){if(!own(k))return;ready=[];const o=opts(k)[i];if(sel[k]===o)delete sel[k];else sel[k]=o;SFX.click();ui()}
+const over=x.cost>bud();$('#hint').textContent=x.miss.length?'Обери: '+x.miss.map(k=>SL[k][0]).join(', '):over?'Перевищено бюджет!':'';$('#lb').disabled=!!x.miss.length||over||!!run||(tn()>1&&ready.filter(Boolean).length<tn())||(NET.on&&!NET.host)}
+function applyPk(k,i){ready=[];const o=opts(k)[i];if(sel[k]===o)delete sel[k];else sel[k]=o;SFX.click()}
+function pk(k,i){if(!own(k))return;if(NET.on&&!NET.host){tx({t:'pk',k,i,id:act});return}applyPk(k,i);bc();ui()}
 function drawBuild(){const g=cx;bg(g,360);g.strokeStyle='rgba(0,240,255,.12)';for(let i=0;i<14;i++){g.beginPath();g.moveTo(320,240);g.lineTo(i*50-30,360);g.stroke()}for(let j=0;j<5;j++){g.beginPath();g.moveTo(0,250+j*j*6);g.lineTo(640,250+j*j*6);g.stroke()}
 const gl=g.createRadialGradient(320,175,10,320,175,170);gl.addColorStop(0,'rgba(0,240,255,.2)');gl.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=gl;g.fillRect(100,0,440,360);
 const by=Math.sin(NOW/600)*5;sat(g,320,175+by,3.1,cfg(),0,0);if(C[cur].th){const sh=sel.shd?sel.shd.sh:0;if(sh){g.fillStyle='#c08a4a';g.fillRect(262,150+by,4+sh*2,50);g.fillStyle='rgba(255,170,40,.5)';g.fillRect(256,150+by,3,50)}tag(g,'☀ Сонце ←',190,110,'#FFB800')}g.fillStyle='rgba(0,240,255,.25)';g.beginPath();g.ellipse(320,265,70-by,8,0,0,7);g.fill();
 if(sel.rk){rocket(g,570,325,.8,sel.rk.t,0);tag(g,'Ракета «'+sel.rk.n+'»',560,348,'#9ab')}tag(g,'Твій апарат',320,345,'#00F0FF')}
-function go(){att++;const x=ev();run={x,v:verdict(x),p:0};PT.length=0;SFX.launch();$('#lb').disabled=true}
+function go(){if(NET.on&&NET.host)tx({t:'go'});att++;const x=ev();run={x,v:verdict(x),p:0};PT.length=0;SFX.launch();$('#lb').disabled=true}
 function sim(dt){const r=run,v=r.v,g=cx;if(!r.pause)r.p+=dt/9000;let p=r.p,stop=v.fl?1:v.p;
-if(v.fl&&!r.fl&&p>=.55){p=r.p=.55;r.pause=1;r.fl=-1;SFX.alarm();panel('<div class="row"><div class="av"></div><p>'+v.fl.t+'</p></div>'+v.fl.o.map((t,i)=>'<button onclick="fl('+i+')">'+t+'</button> ').join(''))}
+if(v.fl&&!r.fl&&p>=.55){p=r.p=.55;r.pause=1;r.fl=-1;SFX.alarm();panel('<div class="row"><div class="av"></div><p>'+v.fl.t+'</p></div>'+(NET.on&&!NET.host?'<p class="fb">Рішення приймає хост — чекаємо…</p>':v.fl.o.map((t,i)=>'<button onclick="fl('+i+')">'+t+'</button> ').join('')))}
 if(p>=stop&&!r.done){p=r.p=stop;r.done=1;finish()}
 bg(g,360);
 if(p<.1||v.k=='mass'){const ex=v.k=='mass'&&p>=.1,sh=p>.01&&!ex?(Math.random()-.5)*3:0;g.save();g.translate(sh,0);g.fillStyle='#161d33';g.fillRect(0,320,640,40);g.fillStyle='#2a3558';g.fillRect(240,314,160,8);
@@ -295,8 +298,8 @@ if(dead)tag(g,'❌ Апарат вимкнувся',320,62,'#FF3B30');
 if(r.fl==-1){g.fillStyle='rgba(255,120,0,'+(.15+.1*Math.sin(NOW/80))+')';g.fillRect(0,0,640,360);tag(g,C[cur].fl.a,320,70,'#FFB800')}
 pts(g,dt)}
 function panel(h){const r=$('#res');r.innerHTML=h;r.classList.add('on');paintPav()}
-function fl(i){$('#res').classList.remove('on');if(i==C[cur].fl.k){run.pause=0;run.fl=1}else{run.v={k:'flarebad',p:run.p};run.pause=0}}
-function retry(){run=null;$('#res').classList.remove('on');ui()}
+function fl(i){if(NET.on&&NET.host)tx({t:'fl',i});$('#res').classList.remove('on');if(i==C[cur].fl.k){run.pause=0;run.fl=1}else{run.v={k:'flarebad',p:run.p};run.pause=0}}
+function retry(){if(NET.on&&NET.host)tx({t:'rt'});run=null;$('#res').classList.remove('on');ui()}
 function finish(){const v=run.v,x=run.x;let m,kc=0,scr=null;v.k=='ok'?SFX.win():v.k=='mass'?0:SFX.fail();let earn=0;const sq=Math.max(0,(Math.min(v.p,1)-.1)/.9),sci=Math.round(x.sc*4*sq);if(v.p>.12&&v.k!='tier'){earn=Math.round(x.sc*4*sq/10*(1+.25*((P.up||{}).sci||0))*(v.k=='ok'?1:.3)*10)/10;P.$=Math.round(((P.$||0)+earn)*10)/10;save()}
 if(v.k=='ok'){m=C[cur].ok;P.cl=P.cl||{};kc=Math.round((P.cl[cur]?5:15+cur*3)*[.8,1,1.3][df()]);scr=score(x);kc+=scr.s;P.cl[cur]=1;P.k=(P.k||0)+kc;P.sc=P.sc||{};if(!P.sc[cur]||scr.t>P.sc[cur][0])P.sc[cur]=[scr.t,scr.s];P.u=Math.max(P.u,Math.min(C.length-1,cur+1));if(cur==C.length-1)P.d=1;save()}
 else m=v.k=='mass'?`Ракета не відірвалася від майданчика: апарат важчий (${x.m} кг), ніж вона може підняти (${x.rk.cap} кг). Обери легші прилади або потужнішу ракету, але стеж за бюджетом!`:v.k=='dat'?`Прилади зібрали ${x.d} МБ за виток, а антена встигла передати лише ${Math.round(x.link)} МБ. Наші знімки застрягли на борту! Обери потужніший передавач або менше приладів.`:v.k=='flarebad'?C[cur].fl.bad:(C[cur].ms&&C[cur].ms[v.k])||MS[v.k];
@@ -345,15 +348,37 @@ return `<button class="ch ${eq?'c':own?'d':''}" onclick="cb('${ctab}',${i})">${s
 function cb(k,i){const o=CS[k][1][i];P.own=P.own||{};P.eq=P.eq||{};if(o[2]&&!P.own[k+i]){if((P.k||0)<o[2]){SFX.bad();return}P.k-=o[2];P.own[k+i]=1;SFX.win()}else SFX.good();if(k=='gear'){const g=EG();if(i==0)P.eg={};else if(g[i])delete g[i];else g[i]=1}else P.eq[k]=i;save();cus()}
 
 let act=0,ready=[],att=0,yrs=1;
-const tn=()=>P.tn||1,df=()=>P.df==null?1:P.df,DFN=['Навчальна','Інженер','Директор'],bud=()=>C[cur].B*[1.25,1,.85][df()];
+const tn=()=>NET.on?NET.n:(P.tn||1),df=()=>P.df==null?1:P.df,DFN=['Навчальна','Інженер','Директор'],bud=()=>C[cur].B*[1.25,1,.85][df()];
 const ROLES=['🧭 Планувальник','🛠 Конструктор','🔬 Науковець','📡 Зв’язок і ресурси'],ROLETAB={orb:0,rk:0,bus:1,sol:1,shd:1,bat:1,cam:2,inst:2,sci:2,ant:3,rd:3},ASG=[[0,0,0,0],[0,1,1,0],[0,1,2,0],[0,1,2,3]];
 const own=k=>tn()==1||ASG[tn()-1][ROLETAB[k]]==act,rl=i=>ROLES.filter((r,j)=>ASG[tn()-1][j]==i).join(' + ');
-function ctn(){P.tn=tn()%4+1;save();menu()}function cdf(){P.df=(df()+1)%3;save();menu()}
+function ctn(){if(NET.on)return;P.tn=tn()%4+1;save();menu()}function cdf(){P.df=(df()+1)%3;save();menu()}
 function bs(i){const r=P.sc&&P.sc[i];return r?'★'.repeat(r[1])+'☆'.repeat(3-r[1])+' '+r[0]:''}
-function rp(){const n=tn(),c=C[cur];$('#yr').innerHTML='<b>⏳ Термін служби:</b> '+[1,3,5].map(y=>`<button class="tb ${y==yrs?'a':''}" onclick="yrs=${y};ready=[];ui()">${y} ${y==1?'рік':y==3?'роки':'років'}</button>`).join('');
+function rp(){const n=tn(),c=C[cur];$('#yr').innerHTML='<b>⏳ Термін служби:</b> '+[1,3,5].map(y=>`<button class="tb ${y==yrs?'a':''}" onclick="sy(${y})">${y} ${y==1?'рік':y==3?'роки':'років'}</button>`).join('');
 if(n<2){$('#pl').innerHTML='';return}if(!own(tab)){const f=c.sl.find(k=>own(k));if(f)tab=f}
-$('#pl').innerHTML=Array.from({length:n},(_,i)=>`<button class="tb ${i==act?'a':''}" onclick="act=${i};ui()">${ready[i]?'✅':'👤'} ${i+1}: ${rl(i)}</button>`).join('')+`<button class="tb" onclick="ready[act]=!ready[act];ui()">${ready[act]?'↩ Ще не готовий':'✅ Готовий'}</button>`}
+$('#pl').innerHTML=Array.from({length:n},(_,i)=>`<button class="tb ${i==act?'a':''}" onclick="if(!NET.on){act=${i};ui()}">${ready[i]?'✅':'👤'} ${i+1}: ${rl(i)}</button>`).join('')+`<button class="tb" onclick="rdy()">${ready[act]?'↩ Ще не готовий':'✅ Готовий'}</button>`}
 function score(x){const c=C[cur],a=[Math.round(Math.min(20,20*x.sc*4/(c.sg||120))),Math.round(Math.max(0,Math.min(15,30*(1-x.cost/bud())))),Math.round(10*Math.min(1,x.m/x.rk.cap*1.25)),[10,7,4,1][Math.min(3,att-1)],tn()>1?5:3],t=Math.min(100,40+a.reduce((p,q)=>p+q,0));return{t,a,s:t>=85?3:t>=65?2:1}}
+
+const NET={on:false,host:false,id:0,peers:[],n:1,dc:null},ICE={iceServers:[{urls:'stun:stun.l.google.com:19302'}]};
+const enc=o=>btoa(unescape(encodeURIComponent(JSON.stringify(o)))),dec=t=>JSON.parse(decodeURIComponent(escape(atob(t.trim()))));
+const nw=h=>{$('#net').innerHTML=h;$('#net').classList.add('on')},nclose=()=>$('#net').classList.remove('on');
+const nlab=()=>{$('#tnb').textContent=NET.on?'👥 Онлайн: '+NET.n+' (ти №'+(NET.id+1)+')':'👥 Гравців: '+tn()};
+const gw=pc=>new Promise(r=>{if(pc.iceGatheringState=='complete')return r();pc.onicegatheringstatechange=()=>pc.iceGatheringState=='complete'&&r();setTimeout(r,5000)});
+function tx(m){const j=JSON.stringify(m);if(NET.host)NET.peers.forEach(p=>p.dc.readyState=='open'&&p.dc.send(j));else if(NET.dc&&NET.dc.readyState=='open')NET.dc.send(j)}
+function bc(){if(NET.on&&NET.host){const q={};for(const k in sel)q[k]=opts(k).indexOf(sel[k]);tx({t:'st',c:cur,s:q,y:yrs,r:ready.map(Boolean),n:NET.n})}}
+function sy(y){if(NET.on&&!NET.host){tx({t:'yr',y});return}yrs=y;ready=[];bc();ui()}
+function rdy(){if(NET.on&&!NET.host){tx({t:'rd',id:act});return}ready[act]=!ready[act];bc();ui()}
+function hm(m,pr){const mis=$('#mis').classList.contains('on');
+if(m.t=='hi'){NET.on=true;NET.id=m.id;NET.n=m.n;act=m.id;nlab();nopen()}
+else if(m.t=='st'){cur=m.c;NET.n=m.n;sel={};for(const k in m.s)sel[k]=opts(k)[m.s[k]];yrs=m.y;ready=m.r||[];nlab();if(mis)ui()}
+else if(m.t=='mis'){cur=m.c;NET.n=m.n;mission()}
+else if(m.t=='go'){go()}else if(m.t=='fl'){fl(m.i)}else if(m.t=='rt'){retry()}
+else if(NET.host&&pr){if(m.t=='pk'&&ASG[tn()-1][ROLETAB[m.k]]==m.id){applyPk(m.k,m.i);bc();ui()}else if(m.t=='yr'){yrs=m.y;ready=[];bc();ui()}else if(m.t=='rd'){ready[m.id]=!ready[m.id];bc();ui()}}}
+function wire(dc,pr){dc.onopen=()=>{NET.on=true;NET.n=NET.peers.length+1;dc.send(JSON.stringify({t:'hi',id:pr.id,n:NET.n}));bc();nlab();nopen()};dc.onmessage=e=>hm(JSON.parse(e.data),pr);dc.onclose=()=>{NET.n=Math.max(1,NET.n-1);nlab()}}
+function nopen(){nw('<h3>🌐 Мультиплеєр без сервера</h3><p>'+(NET.on?(NET.host?'Ти хост. Гравців у кімнаті: '+NET.n+'. Ролі розподіляються автоматично, вибір місії та запуск — за хостом.':'Ти підключений як гравець '+(NET.id+1)+'. Чекай, коли хост запустить місію.'):'Один гравець — хост, інші приєднуються через обмін кодами (через месенджер). Потрібен інтернет.')+'</p>'+(NET.on&&!NET.host?'':'<button onclick="nhost()">'+(NET.on?'➕ Додати гравця':'🏠 Створити кімнату')+'</button> ')+(NET.on?'':'<button onclick="njoin()">🔗 Приєднатись</button> ')+'<button onclick="nclose()">Закрити</button>')}
+async function nhost(){if(NET.peers.length>=3)return alert('Максимум 4 гравці');const pc=new RTCPeerConnection(ICE),dc=pc.createDataChannel('g'),pr={pc,dc,id:NET.peers.length+1};NET.host=true;wire(dc,pr);nw('<p>Готую код…</p>');await pc.setLocalDescription(await pc.createOffer());await gw(pc);NET.cur=pr;nw(`<h3>1️⃣ Код кімнати для гравця ${pr.id+1}</h3><p>Скопіюй і надішли гравцю:</p><textarea readonly onclick="this.select()">${enc(pc.localDescription)}</textarea><h3>2️⃣ Код-відповідь від гравця</h3><textarea id="ans"></textarea><button onclick="nans()">✅ З’єднати</button> <button onclick="nclose()">Закрити</button>`)}
+async function nans(){try{await NET.cur.pc.setRemoteDescription(dec($('#ans').value));NET.peers.push(NET.cur);nw('<p>Чекаю на з’єднання…</p>')}catch(e){alert('Невірний код-відповідь')}}
+function njoin(){nw('<h3>🔗 Приєднання</h3><p>Встав код кімнати від хоста:</p><textarea id="off"></textarea><button onclick="nj2()">Далі</button> <button onclick="nclose()">Закрити</button>')}
+async function nj2(){try{const pc=new RTCPeerConnection(ICE);NET.pc=pc;pc.ondatachannel=e=>{NET.dc=e.channel;NET.host=false;e.channel.onmessage=ev=>hm(JSON.parse(ev.data));e.channel.onclose=()=>{NET.on=false;NET.n=1;act=0;nlab();alert('Зв’язок із хостом втрачено')}};await pc.setRemoteDescription(dec($('#off').value));await pc.setLocalDescription(await pc.createAnswer());nw('<p>Готую відповідь…</p>');await gw(pc);nw(`<h3>Код-відповідь</h3><p>Скопіюй і надішли хосту:</p><textarea readonly onclick="this.select()">${enc(pc.localDescription)}</textarea><p>Після з’єднання це вікно оновиться.</p><button onclick="nclose()">Закрити</button>`)}catch(e){alert('Невірний код кімнати')}}
 menu();requestAnimationFrame(loop);
 </script>
 </body></html>
