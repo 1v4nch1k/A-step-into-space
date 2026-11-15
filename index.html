@@ -49,6 +49,7 @@ input{background:var(--pn);color:var(--tx);border:1px solid #2b3a5c;border-radiu
 .s{padding-top:56px}
 #net{display:none;position:fixed;inset:auto 0 0 0;max-width:640px;margin:auto;background:#0e1424;border:2px solid var(--ok);border-radius:16px 16px 0 0;padding:16px;z-index:30;max-height:85vh;overflow:auto}#net.on{display:block}
 textarea{width:100%;height:90px;background:#05070d;color:var(--tx);border:1px solid #2b3a5c;border-radius:8px;font:11px monospace;margin:6px 0}
+#lgb{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));right:108px;z-index:20;padding:6px 10px}
 #mm{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));right:58px;z-index:20;padding:6px 10px}
 #cit{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}#cit .ch{min-height:76px}
 #shl{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin-top:12px}</style></head><body>
@@ -62,7 +63,7 @@ textarea{width:100%;height:90px;background:#05070d;color:var(--tx);border:1px so
 <canvas id="ic" width="640" height="300"></canvas><div class="row"><div class="av"><small>Д-р Олена Коваль</small></div><div class="bubble"><div id="tx"></div><div id="qs"></div></div></div><button id="nx" class="big"></button></div>
 <div id="mis" class="s"><div class="top"><button onclick="menu()">☰ Меню</button><b id="fm"></b><span class="pav s"></span><button onclick="jr()">📖 Бортовий журнал</button></div><div class="goal" id="goal"></div><div id="mt"></div><canvas id="mc" width="640" height="360"></canvas><div class="tabs" id="pl"></div><div class="tabs" id="yr"></div><div class="tabs" id="tbs"></div><div id="cds"></div><p class="fb" id="hint"></p><button id="lb" class="big" onclick="go()">🚀 ЗАПУСК</button></div>
 <div id="cus" class="s"><div class="top"><button onclick="menu()">☰ Меню</button><b id="cc"></b></div><h2>👨‍🚀 Кастомізація персонажа</h2><div class="row" style="align-items:center"><div class="pav l"></div><div><input id="nm" maxlength="14" placeholder="Твій позивний" oninput="P.nm=this.value;save()"><p class="fb">Обери категорію й купуй речі за касткоїни. Аксесуари можна одягати одразу кілька.</p></div></div><div class="tabs" id="ctb"></div><div id="cit"></div></div>
-<div id="kh">🪙 0 касткоїнів</div><button id="mu" onclick="tg()">🔊</button><button id="mm" onclick="tmu()">🎵</button><div id="net"></div><div id="res"></div><div id="lg"></div>
+<div id="kh">🪙 0 касткоїнів</div><button id="mu" onclick="tg()">🔊</button><button id="mm" onclick="tmu()">🎵</button><button id="lgb" onclick="setL((LANG+1)%3)">🌐 UA</button><div id="net"></div><div id="res"></div><div id="lg"></div>
 <script>
 const $=s=>document.querySelector(s),ix=$('#ic').getContext('2d'),cx=$('#mc').getContext('2d');
 let P={u:0};try{P=JSON.parse(localStorage.getItem('ks')||'{"u":0}')||{u:0}}catch(e){}
@@ -157,7 +158,7 @@ q:'Знімки розмиті: камера надто проста, щоб р�
 flarebad:'Під час сонячного спалаху ця дія не допомогла. Правильне рішення — безпечний режим: вимкнути прилади й берегти батарею, поки спалах мине.'};
 let cur=0,si=0,ans=0,tm,sel={},tab,run=null;
 function show(id){setTimeout(paintPav,0);document.querySelectorAll('.s').forEach(e=>e.classList.toggle('on',e.id==id));$('#res').classList.remove('on');$('#lg').classList.remove('on')}
-function rst(){if(confirm('Стерти прогрес і почати спочатку?')){P={u:0,k:P.k,own:P.own,eq:P.eq,eg:P.eg,nm:P.nm,cl:P.cl,mo:P.mo};save();menu()}}
+function rst(){if(confirm(tr('Стерти прогрес і почати спочатку?'))){P={u:0,k:P.k,own:P.own,eq:P.eq,eg:P.eg,nm:P.nm,cl:P.cl,mo:P.mo};save();menu()}}
 function menu(){show('menu');nlab();$('#dfb').textContent='🎚 Складність: '+DFN[df()];$('#pn').textContent='👨‍🚀 '+(P.nm||'Стажер');$('#kc').textContent='🪙 '+(P.k||0);$('#fnd').innerHTML='💰 Фонди: <b>$'+(P.$||0).toFixed(1)+'M</b>';const IC4=['🛰','🔋','📡','🌕','🔭','☀️','🔴','🪐','❄️'];
 $('#play').textContent=P.d?'🏆 Усі місії виконано! Пройти знову':P.u>0?'▶ ПРОДОВЖИТИ — Глава '+(P.u+1):'▶ ПОЧАТИ ГРУ';$('#play').onclick=()=>story(P.d?0:P.u);
 $('#cl').innerHTML=C.map((c,i)=>{const d=i<P.u||(i==C.length-1&&P.d),cu=i==P.u&&!P.d;return `<button class="ch ${d?'d':cu?'c':''}" ${i>P.u?'disabled':''} onclick="story(${i})"><span class="n">0${i+1}</span><span class="ic">${IC4[i]}</span><b>${c.t}</b><small>${d?'✅ Пройдено '+bs(i):i>P.u?'🔒 Закрито':'▶ Доступно'}</small></button>`}).join('')}
@@ -194,7 +195,7 @@ const ST=Array.from({length:90},(_,i)=>[(i*97)%640,(i*53)%360,i%3+1,i]);
 function bg(g,h){const n=g.createLinearGradient(0,0,640,h);n.addColorStop(0,'#070b1c');n.addColorStop(.5,'#0b1030');n.addColorStop(1,'#120a26');g.fillStyle=n;g.fillRect(0,0,640,h);
 [[120,.3,'110,70,230'],[520,.8,'0,200,255']].forEach(a=>{const r=g.createRadialGradient(a[0],h*a[1],0,a[0],h*a[1],230);r.addColorStop(0,'rgba('+a[2]+',.2)');r.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=r;g.fillRect(0,0,640,h)});
 g.fillStyle='#fff';ST.forEach(s=>{g.globalAlpha=.3+.7*Math.abs(Math.sin(NOW/700+s[3]));g.fillRect(s[0],s[1]%h,s[2]*.7,s[2]*.7)});g.globalAlpha=1;g.textAlign='center';g.font='600 14px system-ui'}
-function tag(g,t,x,y,c){const w=g.measureText(t).width+18;g.fillStyle='rgba(8,14,30,.85)';g.strokeStyle=c;g.lineWidth=1;g.beginPath();g.roundRect(x-w/2,y-15,w,24,12);g.fill();g.stroke();g.fillStyle=c;g.fillText(t,x,y+2)}
+function tag(g,t,x,y,c){t=tr(t);const w=g.measureText(t).width+18;g.fillStyle='rgba(8,14,30,.85)';g.strokeStyle=c;g.lineWidth=1;g.beginPath();g.roundRect(x-w/2,y-15,w,24,12);g.fill();g.stroke();g.fillStyle=c;g.fillText(t,x,y+2)}
 function sunGlow(g,x,y){const r=g.createRadialGradient(x,y,0,x,y,100);r.addColorStop(0,'rgba(255,230,140,.95)');r.addColorStop(.25,'rgba(255,170,40,.4)');r.addColorStop(1,'rgba(255,170,40,0)');g.fillStyle=r;g.fillRect(x-100,y-100,200,200)}
 function planet(g,x,y,r,moon){if(moon=='s'){const gl=g.createRadialGradient(x,y,r*.6,x,y,r*2);gl.addColorStop(0,'rgba(255,200,80,.8)');gl.addColorStop(1,'rgba(255,120,0,0)');g.fillStyle=gl;g.beginPath();g.arc(x,y,r*2,0,7);g.fill();const b=g.createRadialGradient(x,y,0,x,y,r);b.addColorStop(0,'#fff6c8');b.addColorStop(.6,'#ffc83a');b.addColorStop(1,'#ff7a00');g.fillStyle=b;g.beginPath();g.arc(x,y,r*(1+.02*Math.sin(NOW/300)),0,7);g.fill();return}g.save();if(!moon){const a=g.createRadialGradient(x,y,r*.9,x,y,r*1.35);a.addColorStop(0,'rgba(90,170,255,.55)');a.addColorStop(1,'rgba(90,170,255,0)');g.fillStyle=a;g.beginPath();g.arc(x,y,r*1.35,0,7);g.fill()}
 g.beginPath();g.arc(x,y,r,0,7);g.clip();const b=g.createRadialGradient(x-r*.4,y-r*.4,r*.1,x,y,r);if(moon){const pl={1:['#e6e6e6','#6a6a72'],r:['#f0a070','#5a1f12'],j:['#f6dcae','#6b3d1e'],p:['#f4e6d8','#6a5a66']}[moon]||['#e6e6e6','#6a6a72'];b.addColorStop(0,pl[0]);b.addColorStop(1,pl[1])}else{b.addColorStop(0,'#5fb0ff');b.addColorStop(.6,'#1f5fc4');b.addColorStop(1,'#0a2457')}
@@ -235,7 +236,7 @@ if(cur==2){tag(g,'Низька: детально, малий огляд',320,255
 if(cur==0)tag(g,'Супутник кружляє навколо Землі',320,285,'#00F0FF');if(cur>3)tag(g,C[cur].cap,320,285,'#FFB800')}
 function story(i){cur=i;si=0;show('story');$('#ct').textContent='Глава '+(i+1)+': '+C[i].t;step()}
 function step(){const s=C[cur].steps[si],last=si==C[cur].steps.length-1;ans=!s.q;$('#nx').disabled=!ans;$('#nx').textContent=last?'Перейти до практики ▶':'Далі ▶';
-clearInterval(tm);const e=$('#tx'),T=s.t;let k=0;e.textContent='';tm=setInterval(()=>{e.textContent=T.slice(0,++k);if(k%3==0&&T[k-1]!=' ')SFX.blip();if(k>=T.length)clearInterval(tm)},16);
+clearInterval(tm);const e=$('#tx'),T=tr(s.t);let k=0;e.textContent='';tm=setInterval(()=>{e.textContent=T.slice(0,++k);if(k%3==0&&T[k-1]!=' ')SFX.blip();if(k>=T.length)clearInterval(tm)},16);
 const q=$('#qs');q.innerHTML='';if(s.q){q.innerHTML=`<p><b>${s.q}</b></p>`+s.o.map((o,i)=>`<button onclick="aq(${i},this)">${o}</button>`).join('')+'<p class="fb" id="fq"></p>'}}
 function aq(i,b){const s=C[cur].steps[si];if(i==s.a){ans=1;SFX.good();$('#nx').disabled=false;$('#fq').textContent='✅ Саме так!';b.style.borderColor='var(--ok)'}else{SFX.bad();$('#fq').textContent='Майже! Подумай ще раз.'}}
 $('#nx').onclick=()=>{if(!ans)return;if(si==C[cur].steps.length-1)mission();else{si++;step()}};
@@ -364,7 +365,7 @@ async function zip(d,mode){const cs=new(mode?CompressionStream:DecompressionStre
 const slim=d=>({type:d.type,sdp:d.sdp.split('\r\n').filter(l=>!l.startsWith('a=candidate')||(/ udp /i.test(l)&&!/ \S*:\S* \d+ typ /.test(l))).join('\r\n')});
 const enc=async o=>b64(await zip(JSON.stringify(slim(o)),1)),dec=async t=>JSON.parse(new TextDecoder().decode(await zip(ub(t.trim()),0)));
 function cp(id,b){const t=$('#'+id);t.select();const ok=()=>{b.textContent='✅ Скопійовано'};if(navigator.clipboard)navigator.clipboard.writeText(t.value).then(ok,()=>{document.execCommand('copy');ok()});else{document.execCommand('copy');ok()}}
-function pst(id){if(navigator.clipboard&&navigator.clipboard.readText)navigator.clipboard.readText().then(v=>$('#'+id).value=v,()=>alert('Встав код вручну (Ctrl+V)'));else alert('Встав код вручну (Ctrl+V)')}
+function pst(id){if(navigator.clipboard&&navigator.clipboard.readText)navigator.clipboard.readText().then(v=>$('#'+id).value=v,()=>alert(tr('Встав код вручну (Ctrl+V)')));else alert(tr('Встав код вручну (Ctrl+V)'))}
 const nw=h=>{$('#net').innerHTML=h;$('#net').classList.add('on')},nclose=()=>$('#net').classList.remove('on');
 const nlab=()=>{$('#tnb').textContent=NET.on?'👥 Онлайн: '+NET.n+' (ти №'+(NET.id+1)+')':'👥 Гравців: '+tn()};
 const gw=pc=>new Promise(r=>{if(pc.iceGatheringState=='complete')return r();pc.onicegatheringstatechange=()=>pc.iceGatheringState=='complete'&&r();setTimeout(r,5000)});
@@ -380,10 +381,350 @@ else if(m.t=='go'){go()}else if(m.t=='fl'){fl(m.i)}else if(m.t=='rt'){retry()}
 else if(NET.host&&pr){if(m.t=='pk'&&ASG[tn()-1][ROLETAB[m.k]]==m.id){applyPk(m.k,m.i);bc();ui()}else if(m.t=='yr'){yrs=m.y;ready=[];bc();ui()}else if(m.t=='rd'){ready[m.id]=!ready[m.id];bc();ui()}}}
 function wire(dc,pr){dc.onopen=()=>{NET.on=true;NET.n=NET.peers.length+1;dc.send(JSON.stringify({t:'hi',id:pr.id,n:NET.n}));bc();nlab();nopen()};dc.onmessage=e=>hm(JSON.parse(e.data),pr);dc.onclose=()=>{NET.n=Math.max(1,NET.n-1);nlab()}}
 function nopen(){nw('<h3>🌐 Мультиплеєр без сервера</h3><p>'+(NET.on?(NET.host?'Ти хост. Гравців у кімнаті: '+NET.n+'. Ролі розподіляються автоматично, вибір місії та запуск — за хостом.':'Ти підключений як гравець '+(NET.id+1)+'. Чекай, коли хост запустить місію.'):'Один гравець — хост, інші приєднуються через обмін кодами (через месенджер). Потрібен інтернет.')+'</p>'+(NET.on&&!NET.host?'':'<button onclick="nhost()">'+(NET.on?'➕ Додати гравця':'🏠 Створити кімнату')+'</button> ')+(NET.on?'':'<button onclick="njoin()">🔗 Приєднатись</button> ')+'<button onclick="nclose()">Закрити</button>')}
-async function nhost(){if(NET.peers.length>=3)return alert('Максимум 4 гравці');const pc=new RTCPeerConnection(ICE),dc=pc.createDataChannel('g'),pr={pc,dc,id:NET.peers.length+1};NET.host=true;wire(dc,pr);nw('<p>Готую код…</p>');await pc.setLocalDescription(await pc.createOffer());await gw(pc);NET.cur=pr;nw(`<h3>1️⃣ Код кімнати для гравця ${pr.id+1}</h3><p>Скопіюй і надішли гравцю:</p><textarea id="co" readonly onclick="this.select()">${await enc(pc.localDescription)}</textarea><button onclick="cp('co',this)">📋 Копіювати код</button><h3>2️⃣ Код-відповідь від гравця</h3><textarea id="ans"></textarea><button onclick="pst('ans')">📥 Вставити</button> <button onclick="nans()">✅ З’єднати</button> <button onclick="nclose()">Закрити</button>`)}
-async function nans(){try{await NET.cur.pc.setRemoteDescription(await dec($('#ans').value));NET.peers.push(NET.cur);nw('<p>Чекаю на з’єднання…</p>')}catch(e){alert('Невірний код-відповідь')}}
+async function nhost(){if(NET.peers.length>=3)return alert(tr('Максимум 4 гравці'));const pc=new RTCPeerConnection(ICE),dc=pc.createDataChannel('g'),pr={pc,dc,id:NET.peers.length+1};NET.host=true;wire(dc,pr);nw('<p>Готую код…</p>');await pc.setLocalDescription(await pc.createOffer());await gw(pc);NET.cur=pr;nw(`<h3>1️⃣ Код кімнати для гравця ${pr.id+1}</h3><p>Скопіюй і надішли гравцю:</p><textarea id="co" readonly onclick="this.select()">${await enc(pc.localDescription)}</textarea><button onclick="cp('co',this)">📋 Копіювати код</button><h3>2️⃣ Код-відповідь від гравця</h3><textarea id="ans"></textarea><button onclick="pst('ans')">📥 Вставити</button> <button onclick="nans()">✅ З’єднати</button> <button onclick="nclose()">Закрити</button>`)}
+async function nans(){try{await NET.cur.pc.setRemoteDescription(await dec($('#ans').value));NET.peers.push(NET.cur);nw('<p>Чекаю на з’єднання…</p>')}catch(e){alert(tr('Невірний код-відповідь'))}}
 function njoin(){nw('<h3>🔗 Приєднання</h3><p>Встав код кімнати від хоста:</p><textarea id="off"></textarea><button onclick="pst(&quot;off&quot;)">📥 Вставити</button> <button onclick="nj2()">Далі</button> <button onclick="nclose()">Закрити</button>')}
-async function nj2(){try{const pc=new RTCPeerConnection(ICE);NET.pc=pc;pc.ondatachannel=e=>{NET.dc=e.channel;NET.host=false;e.channel.onmessage=ev=>hm(JSON.parse(ev.data));e.channel.onclose=()=>{NET.on=false;NET.n=1;act=0;nlab();alert('Зв’язок із хостом втрачено')}};await pc.setRemoteDescription(await dec($('#off').value));await pc.setLocalDescription(await pc.createAnswer());nw('<p>Готую відповідь…</p>');await gw(pc);nw(`<h3>Код-відповідь</h3><p>Скопіюй і надішли хосту:</p><textarea id="ca" readonly onclick="this.select()">${await enc(pc.localDescription)}</textarea><button onclick="cp('ca',this)">📋 Копіювати код</button><p>Після з’єднання це вікно оновиться.</p><button onclick="nclose()">Закрити</button>`)}catch(e){alert('Невірний код кімнати')}}
+async function nj2(){try{const pc=new RTCPeerConnection(ICE);NET.pc=pc;pc.ondatachannel=e=>{NET.dc=e.channel;NET.host=false;e.channel.onmessage=ev=>hm(JSON.parse(ev.data));e.channel.onclose=()=>{NET.on=false;NET.n=1;act=0;nlab();alert(tr('Зв’язок із хостом втрачено'))}};await pc.setRemoteDescription(await dec($('#off').value));await pc.setLocalDescription(await pc.createAnswer());nw('<p>Готую відповідь…</p>');await gw(pc);nw(`<h3>Код-відповідь</h3><p>Скопіюй і надішли хосту:</p><textarea id="ca" readonly onclick="this.select()">${await enc(pc.localDescription)}</textarea><button onclick="cp('ca',this)">📋 Копіювати код</button><p>Після з’єднання це вікно оновиться.</p><button onclick="nclose()">Закрити</button>`)}catch(e){alert(tr('Невірний код кімнати'))}}
+
+let LANG=P.lang|0;
+const DT=`КРОК У КОСМОС|STEP INTO SPACE|SCHRITT INS ALL
+АРХІТЕКТОР МІСІЙ|MISSION ARCHITECT|MISSIONSARCHITEKT
+ЦЕНТР УПРАВЛІННЯ ПОЛЬОТАМИ|FLIGHT CONTROL CENTER|FLUGKONTROLLZENTRUM
+Спроєктуй власний супутник, запусти його й дізнайся, як працює космос — без жодних попередніх знань.|Design your own satellite, launch it and learn how space works — no prior knowledge needed.|Entwirf deinen eigenen Satelliten, starte ihn und lerne, wie das Weltall funktioniert – ganz ohne Vorkenntnisse.
+Фонди|Funds|Mittel
+▶ ПОЧАТИ ГРУ|▶ START GAME|▶ SPIEL STARTEN
+▶ ПРОДОВЖИТИ — Глава|▶ CONTINUE — Chapter|▶ WEITER — Kapitel
+🏆 Усі місії виконано! Пройти знову|🏆 All missions complete! Play again|🏆 Alle Missionen geschafft! Nochmal spielen
+🛒 Лабораторія покращень|🛒 Upgrade Lab|🛒 Upgrade-Labor
+↺ Почати спочатку|↺ Start over|↺ Neu beginnen
+🔊 Звук увімк./вимк.|🔊 Sound on/off|🔊 Ton an/aus
+🌐 Мультиплеєр|🌐 Multiplayer|🌐 Mehrspieler
+👥 Гравців:|👥 Players:|👥 Spieler:
+👥 Онлайн:|👥 Online:|👥 Online:
+(ти №|(you are #|(du bist Nr.
+🎚 Складність:|🎚 Difficulty:|🎚 Schwierigkeit:
+Навчальна|Training|Training
+Інженер|Engineer|Ingenieur
+Директор|Director|Direktor
+✅ Пройдено|✅ Completed|✅ Abgeschlossen
+🔒 Закрито|🔒 Locked|🔒 Gesperrt
+▶ Доступно|▶ Available|▶ Verfügbar
+Глава|Chapter|Kapitel
+Привіт! Я доктор Олена Коваль, головний системний інженер. Разом ми пройдемо 4 місії — від першого кубсата до польоту на Місяць. Готовий, стажере?|Hi! I'm Dr. Olena Koval, chief systems engineer. Together we'll fly missions — from your first cubesat to the Sun and beyond. Ready, trainee?|Hallo! Ich bin Dr. Olena Koval, leitende Systemingenieurin. Gemeinsam fliegen wir Missionen – vom ersten CubeSat bis zur Sonne und darüber hinaus. Bereit, Trainee?
+Це твій персонаж. За кожну пройдену місію отримуєш 🪙 касткоїни й можеш змінювати його вигляд.|This is your character. Every completed mission earns you 🪙 kastcoins to change their look.|Das ist deine Figur. Jede abgeschlossene Mission bringt 🪙 Kastcoins, um ihr Aussehen zu ändern.
+👨‍🚀 Кастомізація|👨‍🚀 Customize|👨‍🚀 Anpassen
+Стажер|Trainee|Trainee
+Д-р Олена Коваль|Dr. Olena Koval|Dr. Olena Koval
+касткоїнів|kastcoins|Kastcoins
+Касткоїни|Kastcoins|Kastcoins
+касткоїни|kastcoins|Kastcoins
+Перший погляд на Землю|First Look at Earth|Erster Blick auf die Erde
+Енергія та Тінь Землі|Power and Earth's Shadow|Energie und Erdschatten
+Почути шепіт із космосу|Hearing Whispers from Space|Das Flüstern des Alls
+Великий виклик: Місячний розвідник|Grand Challenge: Lunar Scout|Große Herausforderung: Mondaufklärer
+Наука — це гроші|Science Is Money|Wissenschaft ist Geld
+Дотик до Сонця|Touch the Sun|Die Sonne berühren
+Червона планета|The Red Planet|Der Rote Planet
+Гігант Юпітер|Giant Jupiter|Riese Jupiter
+Край Сонячної системи|Edge of the Solar System|Rand des Sonnensystems
+Місія: кубсат для фото хмар на низькій орбіті. Бюджет $10M, вантаж — у межах ракети (до 50 кг). Камера має розрізняти хмари.|Mission: a cubesat to photograph clouds in low orbit. Budget $10M, payload within the rocket limit (up to 50 kg). The camera must resolve clouds.|Mission: ein CubeSat fotografiert Wolken im niedrigen Orbit. Budget 10 Mio. $, Nutzlast im Rahmen der Rakete (bis 50 kg). Die Kamera muss Wolken auflösen.
+Місія: метеосупутник із двома приладами. Бюджет $20M. Панелі мають встигати заряджати батарею, а батареї — вистачати на тінь Землі.|Mission: a weather satellite with two instruments. Budget $20M. Panels must recharge the battery, and the battery must last through Earth's shadow.|Mission: ein Wettersatellit mit zwei Instrumenten. Budget 20 Mio. $. Die Paneele müssen den Akku laden, und der Akku muss für den Erdschatten reichen.
+Місія: моніторинг океанів. Бюджет $40M. Потрібен великий огляд (орбіта вища за низьку), а антена має передати всі зібрані дані за виток.|Mission: ocean monitoring. Budget $40M. You need wide coverage (above low orbit) and the antenna must send all collected data each orbit.|Mission: Ozeanüberwachung. Budget 40 Mio. $. Nötig ist ein großer Überblick (höher als niedriger Orbit), und die Antenne muss alle Daten pro Umlauf senden.
+Іспит: місячний розвідник. Бюджет $80M. Ракета класу 3+, захищена платформа, енергія, зв’язок і дані — усе разом. У польоті можлива позаштатна ситуація!|Exam: lunar scout. Budget $80M. Class 3+ rocket, hardened platform, power, comms and data — all together. An emergency may occur in flight!|Prüfung: Mondaufklärer. Budget 80 Mio. $. Rakete Klasse 3+, geschützte Plattform, Energie, Funk und Daten – alles zusammen. Im Flug kann ein Notfall eintreten!
+Місія-рекордсмен: зібери ≥ 350 науки за місію. Вищий огляд і кращі сканери дають більше науки, але потребують енергії та зв’язку. Бюджет $45M.|Record mission: collect ≥ 350 science. Wider coverage and better scanners give more science but need power and comms. Budget $45M.|Rekordmission: sammle ≥ 350 Wissenschaft. Größerer Überblick und bessere Scanner bringen mehr, brauchen aber Energie und Funk. Budget 45 Mio. $.
+Сонячний зонд: підлети до Сонця на 0.25 а.о. або ближче й збери науку ≥ 200. Бюджет $100M. Обери тепловий щит, радіатори й жаростійкі панелі під свою орбіту — інакше апарат згорить!|Solar probe: fly to 0.25 AU or closer and collect ≥ 200 science. Budget $100M. Pick a heat shield, radiators and heat-resistant panels for your orbit — or the craft will burn up!|Sonnensonde: fliege auf 0,25 AE oder näher und sammle ≥ 200 Wissenschaft. Budget 100 Mio. $. Wähle Hitzeschild, Radiatoren und hitzefeste Paneele für deine Bahn – sonst verglüht das Raumfahrzeug!
+Марс: розвідник. Бюджет $110M, ракета класу 4, захищена платформа, наука ≥ 150. Сонце далі — панелі слабші, є ядерні РІТЕГи.|Mars: scout. Budget $110M, class 4 rocket, hardened platform, science ≥ 150. The Sun is farther — weaker panels; nuclear RTGs are available.|Mars: Aufklärer. Budget 110 Mio. $, Rakete Klasse 4, geschützte Plattform, Wissenschaft ≥ 150. Die Sonne ist weiter weg – schwächere Paneele; nukleare RTGs sind verfügbar.
+Юпітер: бюджет $150M, ракета класу 4, РАД-СТІЙКА платформа (рівень 3), наука ≥ 150. Сонце тут тьмяне — потрібен РІТЕГ.|Jupiter: budget $150M, class 4 rocket, RAD-HARD platform (level 3), science ≥ 150. The Sun is dim here — an RTG is required.|Jupiter: Budget 150 Mio. $, Rakete Klasse 4, STRAHLUNGSFESTE Plattform (Stufe 3), Wissenschaft ≥ 150. Die Sonne ist hier schwach – ein RTG ist nötig.
+Фінал: Плутон. Бюджет $120M, ракета класу 5, наука ≥ 200. Панелі майже марні — потрібен РІТЕГ і потужна антена.|Finale: Pluto. Budget $120M, class 5 rocket, science ≥ 200. Panels are almost useless — you need an RTG and a powerful antenna.|Finale: Pluto. Budget 120 Mio. $, Rakete Klasse 5, Wissenschaft ≥ 200. Paneele sind fast nutzlos – nötig sind ein RTG und eine starke Antenne.
+💰 Камера й наукові сканери збирають науку під час польоту — за неї отримаєш гроші на покращення.|💰 The camera and scanners collect science in flight — it earns money for upgrades.|💰 Kamera und Scanner sammeln im Flug Wissenschaft – dafür gibt es Geld für Upgrades.
+👥 Командний режим: кожен керує лише своїми вкладками, запуск — коли всі натиснуть «Готовий».|👥 Team mode: everyone controls only their own tabs; launch when all press “Ready”.|👥 Teammodus: Jeder steuert nur seine Reiter; Start, wenn alle auf „Bereit“ drücken.
+⏳ Довша місія дає більше науки, але панелі й батареї старіють, а експлуатація коштує дорожче.|⏳ A longer mission yields more science, but panels and batteries age and operations cost more.|⏳ Eine längere Mission bringt mehr Wissenschaft, aber Paneele und Akkus altern und der Betrieb kostet mehr.
+Мала камера|Small camera|Kleine Kamera
+Стандартна камера|Standard camera|Standardkamera
+HD-камера|HD camera|HD-Kamera
+Датчик вологи|Moisture sensor|Feuchtesensor
+ІЧ-сканер|IR scanner|IR-Scanner
+Малі радіатори|Small radiators|Kleine Radiatoren
+Середні радіатори|Medium radiators|Mittlere Radiatoren
+Великі радіатори з трубками|Large radiators with heat pipes|Große Radiatoren mit Wärmerohren
+Малі|Small|Klein
+Середні|Medium|Mittel
+Великі|Large|Groß
+Малий|Small|Klein
+Середній|Medium|Mittel
+Великий|Large|Groß
+Слабка|Weak|Schwach
+Середня|Medium|Mittel
+Потужна|Powerful|Leistungsstark
+Базова|Basic|Basis
+Захищена від радіації|Radiation-hardened|Strahlungsgeschützt
+Без сканера|No scanner|Kein Scanner
+Спектрометр|Spectrometer|Spektrometer
+Радар-альтиметр|Radar altimeter|Radar-Höhenmesser
+Мультиспектральний|Multispectral|Multispektral
+Низька (500 км)|Low (500 km)|Niedrig (500 km)
+Середня (8 000 км)|Medium (8,000 km)|Mittel (8.000 km)
+Геостаціонарна (36 000 км)|Geostationary (36,000 km)|Geostationär (36.000 km)
+Низька місячна|Low lunar|Niedrige Mondbahn
+Висока місячна|High lunar|Hohe Mondbahn
+Низька орбіта Марса|Low Mars orbit|Niedrige Marsbahn
+Висока орбіта Марса|High Mars orbit|Hohe Marsbahn
+Низька орбіта Юпітера|Low Jupiter orbit|Niedrige Jupiterbahn
+Висока орбіта Юпітера|High Jupiter orbit|Hohe Jupiterbahn
+Низька орбіта Плутона|Low Pluto orbit|Niedrige Plutobahn
+Висока орбіта Плутона|High Pluto orbit|Hohe Plutobahn
+0.5 а.о. (як орбіта Меркурія)|0.5 AU (like Mercury's orbit)|0,5 AE (wie die Merkurbahn)
+0.25 а.о. (близько до корони)|0.25 AU (close to the corona)|0,25 AE (nahe der Korona)
+0.1 а.о. (рекорд!)|0.1 AU (record!)|0,1 AE (Rekord!)
+Легка|Light|Leicht
+Важка|Heavy|Schwer
+Надважка|Super-heavy|Superschwer
+Космічний лайнер|Space liner|Raumliner
+РІТЕГ-1 (ядерний)|RTG-1 (nuclear)|RTG-1 (nuklear)
+РІТЕГ-2 (ядерний)|RTG-2 (nuclear)|RTG-2 (nuklear)
+Рад-стійка (для Юпітера)|Rad-hard (for Jupiter)|Strahlungsfest (für Jupiter)
+Графітовий щит|Graphite shield|Graphitschild
+Вуглець-вуглецевий щит|Carbon-carbon shield|Kohlenstoff-Schild
+Композитний щит (11 см)|Composite shield (11 cm)|Verbundschild (11 cm)
+Звичайні панелі|Standard panels|Standardpaneele
+Жаростійкі панелі|Heat-resistant panels|Hitzefeste Paneele
+Панелі, що ховаються в тінь щита|Panels that hide in the shield's shadow|Paneele, die sich im Schildschatten verstecken
+Камера|Camera|Kamera
+Другий прилад|Second instrument|Zweites Instrument
+Сонячні панелі|Solar panels|Solarpaneele
+Акумулятор|Battery|Akku
+Антена зв’язку|Comm antenna|Kommunikationsantenne
+Платформа|Platform|Plattform
+Науковий сканер|Science scanner|Wissenschaftsscanner
+Орбіта|Orbit|Umlaufbahn
+Ракета|Rocket|Rakete
+Тепловий щит|Heat shield|Hitzeschild
+Радіатори|Radiators|Radiatoren
+Вт·год|Wh|Wh
+Вт спож.|W use|W Verbr.
+Вт ген.|W gen.|W Erz.
+Вт тепловідведення|W cooling|W Kühlung
+Вт треба відвести|W to dissipate|W abzuführen
+Вт|W|W
+МБ/виток передачі|MB/orbit transfer|MB/Umlauf Übertragung
+МБ/виток|MB/orbit|MB/Umlauf
+МБ|MB|MB
+кг вантаж|kg payload|kg Nutzlast
+кг|kg|kg
+🔬 науки/виток|🔬 science/orbit|🔬 Wiss./Umlauf
+огляд (1–3)|coverage (1–3)|Überblick (1–3)
+× сила сигналу|× signal strength|× Signalstärke
+мін. клас ракети|min. rocket class|min. Raketenklasse
+клас|class|Klasse
+× тепловий потік|× heat flux|× Wärmestrom
+потрібний рівень щита|required shield level|nötige Schildstufe
+потрібна жаростійкість панелей|required panel heat resistance|nötige Hitzefestigkeit der Paneele
+рівень захисту|protection level|Schutzstufe
+жаростійкість|heat resistance|Hitzefestigkeit
+Маса|Mass|Masse
+Бюджет|Budget|Budget
+Енергія (панелі − споживання)|Power (panels − consumption)|Energie (Paneele − Verbrauch)
+Батарея (треба ≥|Battery (need ≥|Akku (nötig ≥
+Дані за виток|Data per orbit|Daten pro Umlauf
+Наука за місію|Science per mission|Wissenschaft pro Mission
+Тепловий щит (треба ≥|Heat shield (need ≥|Hitzeschild (nötig ≥
+Радіатори (треба ≥|Radiators (need ≥|Radiatoren (nötig ≥
+Жаростійкість панелей (треба|Panel heat resistance (need|Hitzefestigkeit der Paneele (nötig
+Обери:|Choose:|Wähle:
+Перевищено бюджет!|Budget exceeded!|Budget überschritten!
+🚀 ЗАПУСК|🚀 LAUNCH|🚀 START
+📖 Бортовий журнал|📖 Flight log|📖 Bordbuch
+Закрити|Close|Schließen
+⏳ Термін служби:|⏳ Mission lifetime:|⏳ Missionsdauer:
+років|years|Jahre
+роки|years|Jahre
+рік|year|Jahr
+✅ Готовий|✅ Ready|✅ Bereit
+↩ Ще не готовий|↩ Not ready yet|↩ Noch nicht bereit
+Спробувати ще раз|Try again|Nochmal versuchen
+🛒 Покращення|🛒 Upgrades|🛒 Upgrades
+☰ До меню|☰ To menu|☰ Zum Menü
+☰ Меню|☰ Menu|☰ Menü
+☰ Вибір глави|☰ Chapters|☰ Kapitel
+Наступна глава ▶|Next chapter ▶|Nächstes Kapitel ▶
+Далі ▶|Next ▶|Weiter ▶
+Перейти до практики ▶|Go to practice ▶|Weiter zur Praxis ▶
+Ракета «|Rocket «|Rakete «
+Твій апарат|Your spacecraft|Dein Raumfahrzeug
+Виток|Orbit|Umlauf
+🌑 Тінь|🌑 Shadow|🌑 Schatten
+☀ Світло|☀ Sunlight|☀ Sonnenlicht
+🔬 Наука:|🔬 Science:|🔬 Wissenschaft:
+❌ Апарат вимкнувся|❌ Spacecraft shut down|❌ Raumfahrzeug ausgefallen
+🌡 Щит:|🌡 Shield:|🌡 Schild:
+Корпус:|Hull:|Hülle:
+☀ Сонце ←|☀ Sun ←|☀ Sonne ←
+Зароблено:|💰 Earned:|💰 Verdient:
+(наука:|(science:|(Wissenschaft:
+Усього:|Total:|Gesamt:
+Час оновити скафандр?|Time to upgrade your suit?|Zeit, den Anzug aufzurüsten?
+🏅 Оцінка місії:|🏅 Mission score:|🏅 Missionsbewertung:
+Ціль|Goal|Ziel
+Наука|Science|Wissenschaft
+Маса|Mass|Masse
+Спроби|Attempts|Versuche
+Команда|Team|Team
+Гроші, зароблені на науці, вкладай у технології — вони діють у всіх наступних місіях.|Invest the money earned from science in technology — it works in all later missions.|Investiere das mit Wissenschaft verdiente Geld in Technik – sie wirkt in allen weiteren Missionen.
+Рівень|Level|Stufe
+МАКС|MAX|MAX
+ціна|price|Preis
+Легкі матеріали|Lightweight materials|Leichtbaumaterialien
+−10% маси всіх деталей за рівень|−10% mass of all parts per level|−10 % Masse aller Teile pro Stufe
+Ефективні панелі|Efficient panels|Effiziente Paneele
++15% генерації енергії|+15% power generation|+15 % Energieerzeugung
+Щільні акумулятори|Dense batteries|Dichte Akkus
++20% ємності батарей|+20% battery capacity|+20 % Akkukapazität
+Підсилений передавач|Boosted transmitter|Verstärkter Sender
++20% швидкості передачі даних|+20% data transfer rate|+20 % Datenübertragungsrate
+Закупівельний відділ|Procurement office|Einkaufsabteilung
+−8% вартості місії|−8% mission cost|−8 % Missionskosten
+Науковий хаб|Science hub|Wissenschaftszentrum
++25% грошей за науку|+25% money for science|+25 % Geld für Wissenschaft
+Теплоізоляція щита|Shield insulation|Schildisolierung
++1 рівень захисту щита (місія «Дотик до Сонця»)|+1 shield protection level (“Touch the Sun” mission)|+1 Schildschutzstufe (Mission „Die Sonne berühren“)
+Теплові трубки|Heat pipes|Wärmerohre
++15% тепловідведення радіаторів (місія «Дотик до Сонця»)|+15% radiator cooling (“Touch the Sun” mission)|+15 % Radiatorkühlung (Mission „Die Sonne berühren“)
+👨‍🚀 Кастомізація персонажа|👨‍🚀 Character customization|👨‍🚀 Figur anpassen
+Обери категорію й купуй речі за касткоїни. Аксесуари можна одягати одразу кілька.|Pick a category and buy items with kastcoins. You can wear several accessories at once.|Wähle eine Kategorie und kaufe Dinge mit Kastcoins. Du kannst mehrere Accessoires gleichzeitig tragen.
+Твій позивник|Your callsign|Dein Rufzeichen
+Твій позивний|Your callsign|Dein Rufzeichen
+Тон шкіри|Skin tone|Hautton
+Скафандр|Spacesuit|Raumanzug
+Візор|Visor|Visier
+Значок|Badge|Abzeichen
+Спорядження|Gear|Ausrüstung
+Фон|Background|Hintergrund
+Світлий|Light|Hell
+Смаглявий|Tan|Gebräunt
+Темний|Dark|Dunkel
+Класичний білий|Classic white|Klassisch weiß
+Помаранчевий|Orange|Orange
+Космічний синій|Cosmic blue|Kosmosblau
+Зелений|Green|Grün
+Фіолетовий|Purple|Violett
+Золотий|Golden|Golden
+Блакитний|Light blue|Hellblau
+Рожевий|Pink|Rosa
+Червоний шарф|Red scarf|Roter Schal
+Червоний|Red|Rot
+Без значка|No badge|Kein Abzeichen
+Зірка|Star|Stern
+Земля|Earth|Erde
+Місяць|Moon|Mond
+Планета|Planet|Planet
+Прибулець|Alien|Alien
+Немає|None|Keine
+Антена|Antenna|Antenne
+Ліхтар|Headlamp|Stirnlampe
+Навушники|Headphones|Kopfhörer
+Корона|Crown|Krone
+Сонцезахисні окуляри|Sunglasses|Sonnenbrille
+Котячі вушка|Cat ears|Katzenohren
+Німб|Halo|Heiligenschein
+Крила|Wings|Flügel
+Туманність|Nebula|Nebel
+Захід на Марсі|Mars sunset|Marssonnenuntergang
+Аврора|Aurora|Polarlicht
+Галактика|Galaxy|Galaxie
+✔ Одягнено (клік — зняти)|✔ Equipped (click to remove)|✔ Angelegt (Klick zum Ablegen)
+✔ Одягнено|✔ Equipped|✔ Angelegt
+Одягнути|Equip|Anlegen
+Сонце|Sun|Sonne
+🧭 Планувальник|🧭 Mission planner|🧭 Missionsplaner
+🛠 Конструктор|🛠 Designer|🛠 Konstrukteur
+🔬 Науковець|🔬 Scientist|🔬 Wissenschaftler
+📡 Зв’язок і ресурси|📡 Comms & resources|📡 Funk & Ressourcen
+🌐 Мультиплеєр без сервера|🌐 Serverless multiplayer|🌐 Mehrspieler ohne Server
+Один гравець — хост, інші приєднуються через обмін кодами (через месенджер). Потрібен інтернет.|One player is the host; the others join by exchanging codes (via any messenger). Internet required.|Ein Spieler ist Host, die anderen treten per Codeaustausch (per Messenger) bei. Internet nötig.
+Ти хост. Гравців у кімнаті:|You are the host. Players in the room:|Du bist Host. Spieler im Raum:
+Ролі розподіляються автоматично, вибір місії та запуск — за хостом.|Roles are assigned automatically; mission choice and launch belong to the host.|Rollen werden automatisch verteilt; Missionswahl und Start liegen beim Host.
+Ти підключений як гравець|You are connected as player|Du bist verbunden als Spieler
+Чекай, коли хост запустить місію.|Wait for the host to start the mission.|Warte, bis der Host die Mission startet.
+➕ Додати гравця|➕ Add player|➕ Spieler hinzufügen
+🏠 Створити кімнату|🏠 Create room|🏠 Raum erstellen
+🔗 Приєднатись|🔗 Join|🔗 Beitreten
+🔗 Приєднання|🔗 Joining|🔗 Beitreten
+Готую код…|Preparing code…|Code wird vorbereitet…
+1️⃣ Код кімнати для гравця|1️⃣ Room code for player|1️⃣ Raumcode für Spieler
+Скопіюй і надішли гравцю:|Copy it and send it to the player:|Kopiere ihn und sende ihn dem Spieler:
+2️⃣ Код-відповідь від гравця|2️⃣ Reply code from the player|2️⃣ Antwortcode vom Spieler
+✅ З’єднати|✅ Connect|✅ Verbinden
+Чекаю на з’єднання…|Waiting for connection…|Warte auf Verbindung…
+Встав код кімнати від хоста:|Paste the room code from the host:|Füge den Raumcode vom Host ein:
+Далі|Next|Weiter
+Готую відповідь…|Preparing reply…|Antwort wird vorbereitet…
+Код-відповідь|Reply code|Antwortcode
+Скопіюй і надішли хосту:|Copy it and send it to the host:|Kopiere ihn und sende ihn dem Host:
+Після з’єднання це вікно оновиться.|This window updates once connected.|Nach der Verbindung aktualisiert sich dieses Fenster.
+📋 Копіювати код|📋 Copy code|📋 Code kopieren
+✅ Скопійовано|✅ Copied|✅ Kopiert
+📥 Вставити|📥 Paste|📥 Einfügen
+Рішення приймає хост — чекаємо…|The host decides — waiting…|Der Host entscheidet – wir warten…
+Максимум 4 гравці|Maximum 4 players|Maximal 4 Spieler
+Невірний код-відповідь|Invalid reply code|Ungültiger Antwortcode
+Невірний код кімнати|Invalid room code|Ungültiger Raumcode
+Зв’язок із хостом втрачено|Connection to the host lost|Verbindung zum Host verloren
+Встав код вручну (Ctrl+V)|Paste the code manually (Ctrl+V)|Füge den Code manuell ein (Strg+V)
+Стерти прогрес і почати спочатку?|Erase progress and start over?|Fortschritt löschen und neu beginnen?
+Орієнтація: щит завжди між Сонцем і приладами|Orientation: the shield is always between the Sun and the instruments|Ausrichtung: Das Schild liegt immer zwischen Sonne und Instrumenten
+Сонячний спалах!|Solar flare!|Sonneneruption!
+Радіація різко зросла. Що робимо, стажере?|Radiation has spiked. What do we do, trainee?|Die Strahlung ist stark gestiegen. Was tun wir, Trainee?
+Підняти потужність антени, щоб «перекричати» спалах|Boost antenna power to “shout over” the flare|Antennenleistung erhöhen, um die Eruption „zu übertönen“
+Безпечний режим: вимкнути прилади й берегти батарею|Safe mode: switch off instruments and save the battery|Sicherer Modus: Instrumente abschalten und Akku schonen
+Продовжувати зйомку, щоб не втратити час|Keep imaging so we don't lose time|Weiter aufnehmen, um keine Zeit zu verlieren
+Глобальна пилова буря!|Global dust storm!|Globaler Staubsturm!
+Пил закрив Сонце, панелі майже не дають енергії. Що робимо?|Dust has blocked the Sun and the panels give almost no power. What do we do?|Staub verdeckt die Sonne, die Paneele liefern kaum Energie. Was tun wir?
+Увімкнути всі прилади на максимум, щоб встигнути|Run all instruments at maximum to keep up|Alle Instrumente auf Maximum, um Schritt zu halten
+Перейти в режим економії: вимкнути зайве й дочекатися кінця бурі|Switch to power-saving mode: turn off extras and wait for the storm to end|In den Sparmodus wechseln: Überflüssiges abschalten und das Ende des Sturms abwarten
+Різко змінити орбіту, щоб вилетіти з бурі|Change orbit sharply to leave the storm|Die Bahn abrupt ändern, um dem Sturm zu entkommen
+Радіація зламала бортовий комп’ютер!|Radiation has broken the onboard computer!|Strahlung hat den Bordcomputer beschädigt!
+Апарат завис. Сигнал іде 40 хвилин в один бік. Що робимо?|The craft froze. The signal takes 40 minutes one way. What do we do?|Das Raumfahrzeug hängt. Das Signal braucht 40 Minuten pro Richtung. Was tun wir?
+Чекати — може саме пройде|Wait — maybe it will pass by itself|Abwarten – vielleicht geht es von selbst vorbei
+Надіслати команду перезапуску й перейти на резервний комп’ютер|Send a restart command and switch to the backup computer|Neustartbefehl senden und auf den Reservecomputer umschalten
+Вимкнути всі системи, включно з передавачем|Shut down all systems, including the transmitter|Alle Systeme abschalten, auch den Sender
+Апарат потрапив у пилову хмару!|The craft has entered a dust cloud!|Das Raumfahrzeug ist in eine Staubwolke geraten!
+Мікрометеорити б’ють по корпусу. Що робимо?|Micrometeoroids are hitting the hull. What do we do?|Mikrometeoriten treffen die Hülle. Was tun wir?
+Розвернути апарат великою антеною-тарілкою вперед, як щитом|Turn the craft with the big dish antenna forward as a shield|Das Raumfahrzeug mit der großen Schüsselantenne als Schild nach vorn drehen
+Продовжувати зйомку|Keep imaging|Weiter aufnehmen
+Збільшити потужність передавача|Increase transmitter power|Senderleistung erhöhen
+Датчик орієнтації збився!|The attitude sensor has failed!|Der Lagesensor ist ausgefallen!
+Апарат повертається боком до Сонця, і прилади виходять із тіні щита. Що робимо?|The craft is turning sideways to the Sun and the instruments leave the shield's shadow. What do we do?|Das Raumfahrzeug dreht sich seitlich zur Sonne, die Instrumente verlassen den Schildschatten. Was tun wir?
+Негайно виправити орієнтацію, щоб щит знову закривав прилади|Correct the orientation immediately so the shield covers the instruments again|Ausrichtung sofort korrigieren, damit das Schild die Instrumente wieder verdeckt
+Розкрити панелі на повну, щоб накопичити енергію|Fully open the panels to store energy|Paneele ganz öffnen, um Energie zu speichern
+Збільшити швидкість передачі даних на Землю|Increase the data rate to Earth|Datenrate zur Erde erhöhen
+☀ СОНЯЧНИЙ СПАЛАХ!|☀ SOLAR FLARE!|☀ SONNENERUPTION!
+🌪 ПИЛОВА БУРЯ!|🌪 DUST STORM!|🌪 STAUBSTURM!
+⚠ ЗБІЙ КОМП’ЮТЕРА!|⚠ COMPUTER FAILURE!|⚠ COMPUTERAUSFALL!
+☄ МІКРОМЕТЕОРИТИ!|☄ MICROMETEOROIDS!|☄ MIKROMETEORITEN!
+🧭 ЗБІЙ ОРІЄНТАЦІЇ!|🧭 ATTITUDE FAILURE!|🧭 LAGEAUSFALL!
+Науки зібрано замало для цілі місії. Обери кращі прилади чи сканер або вищу орбіту (більший огляд = більше науки).|Not enough science was collected for the mission goal. Choose better instruments or a scanner, or a higher orbit (wider coverage = more science).|Für das Missionsziel wurde zu wenig Wissenschaft gesammelt. Wähle bessere Instrumente oder einen Scanner oder eine höhere Bahn (größerer Überblick = mehr Wissenschaft).
+Ракета не має потужності, щоб вивести апарат на таку далеку орбіту чи до Місяця. Обери ракету вищого класу.|The rocket lacks the power to put the craft into such a distant orbit or to the Moon. Choose a higher-class rocket.|Die Rakete hat nicht genug Leistung für eine so ferne Bahn oder den Mond. Wähle eine Rakete höherer Klasse.
+Радіація вивела електроніку з ладу. Для цієї місії потрібна платформа з сильнішим захистом (вкладка «Платформа»).|Radiation knocked the electronics out. This mission needs a platform with stronger protection (the “Platform” tab).|Strahlung hat die Elektronik zerstört. Diese Mission braucht eine Plattform mit stärkerem Schutz (Reiter „Plattform“).
+Апарат залетів у тінь Землі, панелі замовкли, а батарея розрядилась — і він вимкнувся. Збільш акумулятор, додай потужніші панелі або зменш споживання (прилади й антена теж їдять енергію).|The craft entered Earth's shadow, the panels went dark and the battery ran flat — it shut down. Enlarge the battery, add stronger panels or reduce consumption (instruments and antenna use power too).|Das Raumfahrzeug flog in den Erdschatten, die Paneele fielen aus, der Akku entlud sich – es schaltete ab. Vergrößere den Akku, nimm stärkere Paneele oder senke den Verbrauch (auch Instrumente und Antenne brauchen Energie).
+Орбіта надто низька: апарат бачить замало поверхні. Для цієї місії потрібна вища орбіта.|The orbit is too low: the craft sees too little surface. This mission needs a higher orbit.|Die Bahn ist zu niedrig: Das Raumfahrzeug sieht zu wenig Oberfläche. Diese Mission braucht eine höhere Bahn.
+Знімки розмиті: камера надто проста, щоб розгледіти потрібні деталі. Потрібен кращий об’єктив.|The images are blurry: the camera is too simple to resolve the needed detail. You need a better lens.|Die Bilder sind unscharf: Die Kamera ist zu einfach, um die nötigen Details zu erkennen. Du brauchst ein besseres Objektiv.
+Тепловий щит не витримав: біля Сонця на нього падає потік тепла в сотні разів сильніший, ніж біля Землі. Обери щит вищого рівня або вищу (віддаленішу) орбіту.|The heat shield failed: near the Sun it takes hundreds of times more heat than at Earth. Choose a higher-level shield or a higher (more distant) orbit.|Das Hitzeschild versagte: Nahe der Sonne trifft es hundertfach mehr Wärme als an der Erde. Wähle ein Schild höherer Stufe oder eine höhere (weiter entfernte) Bahn.
+Тепло, що пройшло крізь щит, перегріло апарат: радіатори не встигали відводити його у космос. Додай потужніші радіатори або зменш споживання приладів.|Heat that got through the shield overheated the craft: the radiators couldn't dump it into space. Add stronger radiators or reduce instrument power use.|Wärme, die durch das Schild drang, überhitzte das Raumfahrzeug: Die Radiatoren konnten sie nicht ins All abführen. Nimm stärkere Radiatoren oder senke den Verbrauch.
+Звичайні панелі розплавилися. Біля Сонця потрібні жаростійкі панелі або такі, що ховаються в тінь щита.|Standard panels melted. Near the Sun you need heat-resistant panels or ones that hide in the shield's shadow.|Normale Paneele schmolzen. Nahe der Sonne braucht man hitzefeste Paneele oder solche, die sich im Schildschatten verstecken.
+Панелі дають менше енергії, ніж споживають прилади й насоси радіаторів. Обери потужніші панелі або менше приладів.|The panels produce less power than the instruments and radiator pumps use. Choose stronger panels or fewer instruments.|Die Paneele liefern weniger Energie, als Instrumente und Radiatorpumpen verbrauchen. Wähle stärkere Paneele oder weniger Instrumente.
+Орбіта надто далека: апарат не підійшов достатньо близько до Сонця для ключових вимірювань. Обери ближчу орбіту (потрібно 0.25 а.о. або ближче).|The orbit is too far: the craft didn't get close enough to the Sun for the key measurements. Choose a closer orbit (0.25 AU or closer is required).|Die Bahn ist zu weit: Das Raumfahrzeug kam der Sonne für die wichtigen Messungen nicht nah genug. Wähle eine nähere Bahn (nötig sind 0,25 AE oder näher).
+Орбіта надто далека|The orbit is too far|Die Bahn ist zu weit`,D={},TC=[{},{},{}];
+DT.split('\n').forEach(l=>{const a=l.split('|');if(a.length==3)D[a[0]]=[a[1],a[2]]});
+const KS=Object.keys(D).sort((a,b)=>b.length-a.length);
+const RX=[[/^Ракета не відірвалася від майданчика: апарат важчий \((\S+) кг\), ніж вона може підняти \((\S+) кг\)\. Обери легші прилади або потужнішу ракету, але стеж за бюджетом!$/,['The rocket never left the pad: the spacecraft ($1 kg) is heavier than it can lift ($2 kg). Choose lighter instruments or a more powerful rocket — but watch the budget!','Die Rakete hob nicht ab: Das Raumfahrzeug ($1 kg) ist schwerer, als sie tragen kann ($2 kg). Wähle leichtere Instrumente oder eine stärkere Rakete – aber achte auf das Budget!']],
+[/^Прилади зібрали (\S+) МБ за виток, а антена встигла передати лише (\S+) МБ\. Наші знімки застрягли на борту! Обери потужніший передавач або менше приладів\.$/,['The instruments collected $1 MB per orbit, but the antenna could only send $2 MB. Our images are stuck on board! Choose a stronger transmitter or fewer instruments.','Die Instrumente sammelten $1 MB pro Umlauf, doch die Antenne konnte nur $2 MB senden. Unsere Bilder stecken an Bord fest! Wähle einen stärkeren Sender oder weniger Instrumente.']]];
+function tr(x){if(!LANG||typeof x!='string')return x;const c=TC[LANG];if(c[x]!==undefined)return c[x];let r=x;const d=D[x];if(d)r=d[LANG-1];else{let hit=0;for(const [re,t] of RX)if(re.test(x)){r=x.replace(re,t[LANG-1]);hit=1;break}if(!hit)for(const k of KS)if(r.includes(k))r=r.split(k).join(D[k][LANG-1])}return c[x]=r}
+function trn(n){const v=n.nodeValue;if(v!==n.__t)n.__o=v;const r=tr(n.__o);n.__t=r;if(r!==v)n.nodeValue=r}
+function trw(root){const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentNode&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentNode.nodeName)?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});let n;while(n=w.nextNode())trn(n)}
+new MutationObserver(ms=>ms.forEach(m=>{if(m.type=='characterData')trn(m.target);else m.addedNodes.forEach(a=>a.nodeType==3?trn(a):a.nodeType==1&&trw(a))})).observe(document.body,{childList:true,subtree:true,characterData:true});
+function lab(){$('#lgb').textContent=['🌐 UA','🌐 EN','🌐 DE'][LANG];document.documentElement.lang=['uk','en','de'][LANG];document.title=['Крок у космос: Архітектор місій','Step into Space: Mission Architect','Schritt ins All: Missionsarchitekt'][LANG];const n=$('#nm');if(n)n.placeholder=tr('Твій позивний')}
+function setL(i){LANG=i;P.lang=i;save();TC.forEach(o=>{for(const k in o)delete o[k]});trw(document.body);lab()}
+lab();if(LANG)trw(document.body);
 menu();requestAnimationFrame(loop);
 </script>
 </body></html>
